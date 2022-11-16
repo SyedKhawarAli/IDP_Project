@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+{% extends 'spectralImages/base.html' %} 
+{% block content %} 
+{% for image in spectralImages %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#">{{ image.title }}</a>
+            <small class="text-muted">{{ image.date_posted | date:'F d, Y'}}</small>
+        </div>
+        <h2><a class="article-title" href="#">{{ image.title }}</a></h2>
+        <p class="article-content">{{ image.path }}</p>
+        <img src="spectralImages/wallpapers.png" alt="My image">
+    </div>
+</article>
+{% endfor %} 
+{% endblock %}
