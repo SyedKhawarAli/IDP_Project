@@ -82,3 +82,13 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+.images-names-table-div {
+  position: absolute;
+  width: 100%;
+  margin-top: -100px;
+  z-index: 10;
+  height: 100%;
+  max-height: 1340px;
+  overflow-y: scroll;
+}
