@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import SpectralImage, BinaryMasksImage
 
-# Register your models here.
+admin.site.register(SpectralImage)
+admin.site.register(BinaryMasksImage)
