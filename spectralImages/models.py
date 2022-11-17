@@ -6,5 +6,13 @@ class SpectralImage(models.Model):
     path = models.CharField(max_length=150)
     date_added = models.DateTimeField(default=timezone.now)
 
-    # def __int__(self):
-    #     return self.id
+    def __str__(self):
+        return self.title
+    
+class BinaryMasksImage(models.Model):
+    title = models.CharField(max_length=100)
+    path = models.CharField(max_length=150)
+    date_added = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.title
