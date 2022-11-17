@@ -44,20 +44,8 @@
                     {% block content %}{% endblock %}
             </div>
             <div class="col-md-8">
-                <div class="content-section">
-                    <h3>Preview Image Layers</h3>
-                    {% load static %}
-                    <img class="col-md-12" src="{% static "spectralImages/wallpapers.png" %}" alt="My image" />
-                    <br>
-                    <br>
-                    <p class='text-muted'>You can put any information here you'd like.
-                    <ul class="list-group">
-                        <li class="list-group-item list-group-item-light">Image cube data</li>
-                        <li class="list-group-item list-group-item-light">Wavelength</li>
-                        <li class="list-group-item list-group-item-light">Preview data</li>
-                        <li class="list-group-item list-group-item-light">Metadata</li>
-                    </ul>
-                    </p>
+                <div class="content-section">                    
+                    {% block sideBarContent %}{% endblock %}
                 </div>
             </div>
         </div>
