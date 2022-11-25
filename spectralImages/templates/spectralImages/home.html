@@ -3,14 +3,40 @@
 {% extends 'spectralImages/base.html' %}
 {% block content %}
 {% for image in spectralImages %}
-    <article class="media content-section">
-        <div class="media-body">
-            <div class="article-metadata">
-                <small class="text-muted">{{ image.date_added | date:'F d, Y'}}</small>
-            </div>
-            <h5><a class="article-title" href="#">{{ image.title }}</a></h5>
-            <p class="article-content">{{ image.path }}</p>
-        </div>
-    </article>
-    {% endfor %}
+<article class="media content-section">
+    <div class="media-body">
+        <!-- <div class="article-metadata">
+            <small class="text-muted">{{ image.date_added | date:'F d, Y'}}</small>
+        </div> -->
+        <h5><a class="article-title" href="{% url 'select_item_view' image %}">{{ image.path }}</a></h5>
+        <p class="article-content">{{ maskedTitle }}</p>
+        {% for maskImage in maskedImages %}
+        {% if image.title in maskImage.title %}        
+                <p><a class="article-title" href="{% url 'select_masked_item_view' maskImage %}">{{ maskImage.path }}</a></p>
+            {% endif %}
+        {% endfor %}
+    </div>
+</article>
+{% endfor %}
 {% endblock %}
+
+{% block sideBarContent %}
+<h3>Preview Image Layers</h3>
+{% load static %}
+<div>
+    <img class="col-md-12" src="{{ dataurl }}" alt="Preview Image" />
+    <br>
+    <br>
+    <img class="col-md-12" src="{{ layerDataUrl }}" alt="Preview Image" />
+    <br>
+    <br>
+     <p class='text-muted'>You can put any information here you'd like.
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-light">Image cube data sahpe -> {{ cube.shape }} </li>
+        <li class="list-group-item list-group-item-light">Wavelength Data -> {{ wavelengths }} </li>
+        <li class="list-group-item list-group-item-light">Preview data -> {{ preview_image.shape }} </li>
+        <li class="list-group-item list-group-item-light">Metadata -> {{ metadata }} </li>
+    </ul>
+    </p>
+</div>
+{% endblock sideBarContent %}
