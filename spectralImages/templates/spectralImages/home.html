@@ -27,9 +27,16 @@
     <img class="col-md-12" src="{{ dataurl }}" alt="Preview Image" />
     <br>
     <br>
-    <img class="col-md-12" src="{{ layerDataUrl }}" alt="Preview Image" />
-    <br>
-    <br>
+    {% for layerDataUrl in layerDataUrls %}
+    <div class="mySlides">
+        <img class="col-md-12" src="{{ layerDataUrl }}">
+    </div>
+        <!-- <img class="col-md-12" src="{{ layerDataUrl }}" alt="Preview Image" /> -->
+    {% endfor %}
+    <a class="prev" onclick="plusSlides(-1)">❮</a>
+    <a class="next" onclick="plusSlides(1)">❯</a>
+    
+    </div>
      <p class='text-muted'>You can put any information here you'd like.
     <ul class="list-group">
         <li class="list-group-item list-group-item-light">Image cube data sahpe -> {{ cube.shape }} </li>
