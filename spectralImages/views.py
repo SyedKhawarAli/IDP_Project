@@ -17,7 +17,6 @@ def getFlatFieldedImagesNameFromFolder():
     path = "spectralImages/flat-fielded"
     return os.listdir(path)
 
-
 def getBinaryMasksImagesNameFromFolder():
     path = "spectralImages/binary-masks"
     return os.listdir(path)
@@ -54,12 +53,16 @@ def fetchDataFromSelected(request, image):
     contents = base64.b64encode(buffer.getvalue()).decode('utf-8')
     dataurl = 'data:image/png;base64,' + contents
     # img.show()
-    cube_image_array = np.array(cube[:,:,1], dtype=np.uint8)
-    cubeImg = PIL.Image.fromarray(cube_image_array)
-    cubeBuffer = BytesIO()
-    cubeImg.save(cubeBuffer, "PNG")
-    cubeContents = base64.b64encode(cubeBuffer.getvalue()).decode('utf-8')
-    layerDataUrl = 'data:image/png;base64,' + cubeContents
+    layerDataUrls = [dataurl]
+    numberOfLayers = len(cube[0][0])
+    for x in range(numberOfLayers):
+        imageArray = np.array(cube[:, :, x]) * 255
+        cube_image_array = np.array(imageArray, dtype=np.uint8)
+        cubeImg = PIL.Image.fromarray(cube_image_array)
+        cubeBuffer = BytesIO()
+        cubeImg.save(cubeBuffer, "PNG")
+        cubeContents = base64.b64encode(cubeBuffer.getvalue()).decode('utf-8')
+        layerDataUrls.append('data:image/png;base64,' + cubeContents)
     
     context = {
         'spectralImages': SpectralImage.objects.all(),
@@ -67,18 +70,14 @@ def fetchDataFromSelected(request, image):
         'cube': cube,
         'wavelengths': wavelengths,
         'preview_image': preview_image,
-        'metadata': metadata,
-        'dataurl': dataurl,
-        'layerDataUrl': layerDataUrl
+        'metadata': numberOfLayers,
+        'dataurl': "dataurl",
+        'layerDataUrls': layerDataUrls
     }
     return render(request, 'spectralImages/home.html', context)
 
 
 def fetchMaskedDataFromSelected(request, image):
-    cube, wavelengths, preview_image, metadata = read_stiff(
-        "spectralImages/binary-masks/"+image+".tif")
-
-
     cube, wavelengths, preview_image, metadata = read_stiff(
         "spectralImages/binary-masks/"+image+".tif")
     image_array = np.array(preview_image, dtype=np.uint8)
@@ -88,15 +87,26 @@ def fetchMaskedDataFromSelected(request, image):
     contents = base64.b64encode(buffer.getvalue()).decode('utf-8')
     dataurl = 'data:image/png;base64,' + contents
     # img.show()
-
+    layerDataUrls = []
+    numberOfLayers = len(cube[0][0])
+    for x in range(numberOfLayers):
+        imageArray = np.array(cube[:, :, x]) * 255
+        cube_image_array = np.array(imageArray, dtype=np.uint8)
+        cubeImg = PIL.Image.fromarray(cube_image_array)
+        cubeBuffer = BytesIO()
+        cubeImg.save(cubeBuffer, "PNG")
+        cubeContents = base64.b64encode(cubeBuffer.getvalue()).decode('utf-8')
+        layerDataUrls.append('data:image/png;base64,' + cubeContents)
+        
     context = {
         'spectralImages': SpectralImage.objects.all(),
         'maskedImages': BinaryMasksImage.objects.all(),
         'cube': cube,
         'wavelengths': wavelengths,
         'preview_image': preview_image,
-        'metadata': metadata,
+        'metadata': numberOfLayers,
         'dataurl': dataurl,
+        'layerDataUrls': layerDataUrls
     }
     return render(request, 'spectralImages/home.html', context)
 
