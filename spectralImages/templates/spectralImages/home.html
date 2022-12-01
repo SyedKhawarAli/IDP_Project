@@ -8,11 +8,11 @@
         <!-- <div class="article-metadata">
             <small class="text-muted">{{ image.date_added | date:'F d, Y'}}</small>
         </div> -->
-        <a class="article-title" href="{% url 'select_item_view' image %}"><h2>IMAGE</h2> <p>{{ image.path }}</p></a>
+        <a class="article-title" href="{% url 'select_item_view' image %}"><h3>{{ image.title }}</h3></a>
         <p class="article-content">{{ maskedTitle }}</p>
         {% for maskImage in maskedImages %}
         {% if image.title in maskImage.title %}        
-                <p><a class="article-title" href="{% url 'select_masked_item_view' maskImage %}">{{ maskImage.path }}</a></p>
+                <p><a class="article-title" href="{% url 'select_masked_item_view' maskImage %}">{{ maskImage.title }}</a></p>
             {% endif %}
         {% endfor %}
     </div>
