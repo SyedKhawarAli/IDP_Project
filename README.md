@@ -8,6 +8,8 @@ Before running the project, place the spectral images folder in the project like
 
 To run the project open `terminal` on mac or `shell` in window, navigate to project folder and run the command
 
+Install necessary libraries `NumPy`, `Matplotlib` and `Pyyaml`
+
 ```
 python manage.py runserver
 ```
