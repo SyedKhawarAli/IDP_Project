@@ -1,8 +1,7 @@
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 1000px;
-  height: 712px;
+  max-width: 64%;
   position: relative;
   margin: auto;
 }
@@ -92,7 +91,7 @@ color: white;
 
 padding-left: 0px;
 padding-right: 0px;
-"
+padding-bottom: 40px;
 }
 
 /* Fading animation */

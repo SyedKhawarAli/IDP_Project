@@ -9,10 +9,6 @@ import PIL
 from io import BytesIO
 import base64
 
-#read sample image for testing
-cube, wavelengths, preview_image, metadata = read_stiff(
-    "spectralImages/Set 1, lower 2, icg.tif")
-
 def getFlatFieldedImagesNameFromFolder():
     path = "spectralImages/flat-fielded"
     return os.listdir(path)
@@ -53,7 +49,6 @@ def fetchDataFromSelected(request, image):
     img.save(buffer, "PNG")
     contents = base64.b64encode(buffer.getvalue()).decode('utf-8')
     dataurl = 'data:image/png;base64,' + contents
-    # img.show()
     layerDataUrls = [dataurl]
     numberOfLayers = len(cube[0][0])
     for x in range(numberOfLayers):
@@ -71,7 +66,7 @@ def fetchDataFromSelected(request, image):
         'cube': cube,
         'wavelengths': wavelengths,
         'preview_image': preview_image,
-        'metadata': numberOfLayers,
+        'metadata': metadata,
         'dataurl': "dataurl",
         'layerDataUrls': layerDataUrls
     }
@@ -87,7 +82,6 @@ def fetchMaskedDataFromSelected(request, image):
     img.save(buffer, "PNG")
     contents = base64.b64encode(buffer.getvalue()).decode('utf-8')
     dataurl = 'data:image/png;base64,' + contents
-    # img.show()
     layerDataUrls = []
     numberOfLayers = len(cube[0][0])
     for x in range(numberOfLayers):
@@ -105,7 +99,7 @@ def fetchMaskedDataFromSelected(request, image):
         'cube': cube,
         'wavelengths': wavelengths,
         'preview_image': preview_image,
-        'metadata': numberOfLayers,
+        'metadata': metadata,
         'dataurl': dataurl,
         'layerDataUrls': layerDataUrls
     }
@@ -123,14 +117,5 @@ def home(request):
         'spectralImages': SpectralImage.objects.all(),
         'maskedImages': BinaryMasksImage.objects.all()
     }
-    # print(cube, wavelengths, preview_image, metadata)
-    # f = open("demofile.txt", "w")
-    # print(len(cube))
-    # print(len(cube[0]))
-    # print(len(cube[0][0]))
-    # for value in cube:
-    #     print(len(value))
-    #     for item in value:
-    #         print(len(item))
-            # f.write(str(item))
+  
     return render(request, 'spectralImages/home.html', context)
