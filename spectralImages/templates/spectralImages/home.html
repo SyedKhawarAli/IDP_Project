@@ -8,7 +8,7 @@
         <!-- <div class="article-metadata">
             <small class="text-muted">{{ image.date_added | date:'F d, Y'}}</small>
         </div> -->
-        <h5><a class="article-title" href="{% url 'select_item_view' image %}">{{ image.path }}</a></h5>
+        <a class="article-title" href="{% url 'select_item_view' image %}"><h2>IMAGE</h2> <p>{{ image.path }}</p></a>
         <p class="article-content">{{ maskedTitle }}</p>
         {% for maskImage in maskedImages %}
         {% if image.title in maskImage.title %}        
@@ -21,29 +21,37 @@
 {% endblock %}
 
 {% block sideBarContent %}
-<h3>Preview Image Layers</h3>
+<!--<h3>Preview Image Layers</h3>-->
 {% load static %}
-<div>
-    <img class="col-md-12" src="{{ dataurl }}" alt="Preview Image" />
-    <br>
-    <br>
+<div class="slideshow-container">
+ 
     {% for layerDataUrl in layerDataUrls %}
     <div class="mySlides">
         <img class="col-md-12" src="{{ layerDataUrl }}">
     </div>
         <!-- <img class="col-md-12" src="{{ layerDataUrl }}" alt="Preview Image" /> -->
     {% endfor %}
+
+    {% if layerDataUrls %}
     <a class="prev" onclick="plusSlides(-1)">❮</a>
     <a class="next" onclick="plusSlides(1)">❯</a>
     
     </div>
-     <p class='text-muted'>You can put any information here you'd like.
+    
     <ul class="list-group">
-        <li class="list-group-item list-group-item-light">Image cube data sahpe -> {{ cube.shape }} </li>
-        <li class="list-group-item list-group-item-light">Wavelength Data -> {{ wavelengths }} </li>
-        <li class="list-group-item list-group-item-light">Preview data -> {{ preview_image.shape }} </li>
-        <li class="list-group-item list-group-item-light">Metadata -> {{ metadata }} </li>
+        <li class="list-group-item list-group-item-light"><h5>Image cube data sahpe</h5> {{ cube.shape }} </li>
+        <li class="list-group-item list-group-item-light"><h5>Wavelength Data</h5> {{ wavelengths }} </li>
+        <li class="list-group-item list-group-item-light"><h5>Preview data</h5> {{ preview_image.shape }} </li>
+        <li class="list-group-item list-group-item-light"><h5>Metadata</h5>  {{ metadata }} </li>
     </ul>
-    </p>
+    {% else %}
+   <h1>Load Image From SideMenu</h1>
+{% endif %}
+
+
+
 </div>
 {% endblock sideBarContent %}
+
+
+   
