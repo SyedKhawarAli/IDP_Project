@@ -28,10 +28,7 @@ def saveFlatFieldedDataIntoTable(files):
     spectralImages = SpectralImage.objects
     if not spectralImages.exists():
         for index, file in enumerate(files):
-            for maskImage in BinaryMasksImage.objects.all():
-                if getNameOfFileWithOutExtension(file) in maskImage.title:
-                    maskModel = maskImage
-            SpectralImage(index, getNameOfFileWithOutExtension(file), file, maskModel.id).save()
+            SpectralImage(index, getNameOfFileWithOutExtension(file), file).save()
     else :
         print("Already added in database")
         
@@ -39,7 +36,11 @@ def saveBinaryMaskDataIntoTable(files):
     binaryMasksImages = BinaryMasksImage.objects
     if not binaryMasksImages.exists():
         for index, file in enumerate(files):
-            BinaryMasksImage(index, getNameOfFileWithOutExtension(file), file).save()
+            for spectralImage in SpectralImage.objects.all():
+                if spectralImage.title in getNameOfFileWithOutExtension(file):
+                    spectralModel = spectralImage
+            BinaryMasksImage(index, getNameOfFileWithOutExtension(file), file, spectralModel.id).save()
+            spectralImage = ""
     else :
         print("Already added in database")     
 
@@ -111,12 +112,12 @@ def fetchMaskedDataFromSelected(request, image):
     return render(request, 'spectralImages/home.html', context)
 
 def home(request):
-    binaryMasksFiles = getBinaryMasksImagesNameFromFolder()
-    saveBinaryMaskDataIntoTable(binaryMasksFiles)
 
     flatFieldFiles = getFlatFieldedImagesNameFromFolder()
     saveFlatFieldedDataIntoTable(flatFieldFiles)
     
+    binaryMasksFiles = getBinaryMasksImagesNameFromFolder()
+    saveBinaryMaskDataIntoTable(binaryMasksFiles)
     
     context = {
         'spectralImages': SpectralImage.objects.all(),
